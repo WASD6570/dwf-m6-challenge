@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "sunset-club";
+  src: url("./font/sunset-club.ttf");
+}
+body {
+  background-color: #002;
+}
