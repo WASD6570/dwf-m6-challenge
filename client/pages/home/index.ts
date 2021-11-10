@@ -13,6 +13,7 @@ export function initHomePage(containerEl: Element) {
   .main-title {
     padding-left: 40px;
     color: #fff;
+    text-align: center;
   }  
 
   .main-title {
@@ -20,6 +21,10 @@ export function initHomePage(containerEl: Element) {
     font-size: 4rem;
     animation: flicker 8s infinite alternate;
 }
+  .v2{
+    font-size: 2rem;
+    margin: 0px;
+  }
 
 @keyframes flicker {
     
@@ -43,7 +48,9 @@ export function initHomePage(containerEl: Element) {
   `;
 
   div.innerHTML = `
-  <h1 class="main-title">Piedra ,<br> Papel o <br> Tijera</h1>
+  <h1 class="main-title">Piedra ,<br> Papel o<br>Tijera <br>
+   <p class="main-title v2">v2</p>
+   </h1>
   `;
 
   containerEl.appendChild(div);

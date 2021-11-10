@@ -13,12 +13,16 @@ import { state } from "./state";
     background: url(${imgUrl})
     center fixed;
     background-size: cover;
+    position: relative;
+  }
+  .container{
+    margin-top: 30px;
   }
   .go-home-container{
-    margin-top: 10px;
+    margin-top: -27px;
     font-family: "sunset-club";
     font-size: 25px;
-    width: 150px;
+    width: 100px;
     height: 47px;
     background: transparent;
     color: #fff;
@@ -31,6 +35,7 @@ import { state } from "./state";
     0 0 0.8rem #C724B1,
     0 0 2.8rem #C724B1,
     inset 0 0 1.3rem #C724B1;
+    position: absolute
 }
 @keyframes flick {
 
