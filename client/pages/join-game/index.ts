@@ -79,7 +79,7 @@ export function initJoinGamePage(containerEl: Element) {
       <input type="text" class="input" id="formulario" placeholder="ingresa tu nombre">
       <input type="number" class="name-input" id="formulario" placeholder="room id">
       <button class="bttn">
-      <custom-button></custom-button>
+      <custom-button class="join-game"></custom-button>
       </button>
     </form>
   `;
@@ -107,10 +107,8 @@ export function initJoinGamePage(containerEl: Element) {
     await state.getExistingRoomId(roomId.value.toString());
     await state.joinRoom();
 
-    containerEl.removeChild(containerEl.querySelector("custom-button"));
+    containerEl.querySelector("custom-button").remove();
     goTo("/instructions");
   });
   containerEl.appendChild(style);
 }
-
-//roomId = 1867

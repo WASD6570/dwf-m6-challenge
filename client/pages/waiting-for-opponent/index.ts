@@ -50,9 +50,17 @@ export async function initWFOPage(containerEl: Element) {
   <h1 class="main-title">${await gameState.publicId}</h1>
   <h2 class="main-title">Good luck, have fun!</h2>
   `;
-
   await state.checkForOpponent();
 
   containerEl.appendChild(div);
   containerEl.appendChild(style);
+
+  const contenedor = containerEl.querySelectorAll(".container");
+  const estilos = containerEl.querySelectorAll(".style");
+  window.addEventListener("load", () => {
+    if (contenedor.length > 0) {
+      contenedor[0].remove();
+      estilos[0].remove();
+    }
+  });
 }

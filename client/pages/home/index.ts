@@ -48,6 +48,7 @@ export function initHomePage(containerEl: Element) {
 
   containerEl.appendChild(div);
   const newGameBttn = document.createElement("custom-button");
+  newGameBttn.setAttribute("class", "new-game-home");
   const joinGameBttn = document.createElement("custom-button");
   joinGameBttn.setAttribute("class", "join-game");
 

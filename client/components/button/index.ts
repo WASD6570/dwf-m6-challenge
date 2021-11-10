@@ -62,21 +62,34 @@ class Button extends HTMLElement {
     buttonContainer.appendChild(button);
     this.shadow.appendChild(buttonContainer);
 
-    if (location.pathname == "/home" && this.className == "join-game")
+    button.textContent = " ";
+
+    if (location.pathname == "/home" && this.className == "join-game") {
       return (button.textContent = "Join room");
+    }
 
-    if (location.pathname == "/home") return (button.textContent = "New Game");
+    if (location.pathname == "/home" && this.className == "new-game-home") {
+      return (button.textContent = "New Game");
+    }
 
-    if (location.pathname == "/new-game") return (button.textContent = "Start");
+    if (location.pathname == "/new-game" && this.className == "new-game") {
+      return (button.textContent = "Start");
+    }
 
-    if (location.pathname == "/join-game")
+    if (location.pathname == "/join-game" && this.className == "join-game") {
       return (button.textContent = "Join Room");
+    }
 
-    if (location.pathname == "/instructions")
+    if (
+      location.pathname == "/instructions" &&
+      this.className == "instructions"
+    ) {
       return (button.textContent = "Play");
+    }
 
-    if (location.pathname == "/result")
+    if (location.pathname == "/result" && this.className == "result") {
       return (button.textContent = "Play Again");
+    }
   }
 }
 

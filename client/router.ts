@@ -7,8 +7,9 @@ import { initNewGamePage } from "./pages/new-game/index";
 import { initJoinGamePage } from "./pages/join-game/index";
 import { initWFOPage } from "./pages/waiting-for-opponent/index";
 import { initWFOReadyPage } from "./pages/waiting-ready-opponent/index";
+import { state } from "./state";
 
-function routeHandler(path, container) {
+function routeHandler(path: string, container: Element) {
   const routes = [
     {
       path: /\/home/,
@@ -65,10 +66,13 @@ function routeHandler(path, container) {
       },
     },
   ];
-  if (container.firstChild) {
-    container.removeChild(document.querySelector(".container"));
-    container.removeChild(document.querySelector(".style"));
+  const contenedor = container.querySelectorAll(".container");
+  const estilos = container.querySelectorAll(".style");
+  if (contenedor.length > 0) {
+    contenedor[0].remove();
+    estilos[0].remove();
   }
+
   for (const r of routes) {
     if (r.path.test(path)) {
       r.handler(container);
@@ -76,12 +80,21 @@ function routeHandler(path, container) {
   }
 }
 
-export function goTo(path: string) {
+export async function goTo(path: string) {
   const root = document.querySelector(".root");
   history.pushState({}, "", path);
   routeHandler(path, root);
+  const data = state.getState();
+  data.gameState.currentPage = path;
+
+  localStorage.setItem("localState", JSON.stringify(data));
 }
 
-export function initRouter(container: Element) {
-  goTo("/home");
+export async function initRouter() {
+  const { gameState } = await state.getState();
+  if (gameState.currentPage == null) {
+    goTo("/home");
+  } else {
+    goTo(gameState.currentPage);
+  }
 }

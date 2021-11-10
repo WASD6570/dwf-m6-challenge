@@ -3,7 +3,7 @@ import * as express from "express";
 import { nanoid } from "nanoid";
 const path = require("path");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 const app = express();
 
 app.use(express.static(path.join(__dirname, "../dist")));
@@ -55,7 +55,7 @@ app.post("/auth", async (req, res) => {
 
   const obj = {
     name: data.gameState.name,
-    winner: data.winner,
+    scoreboard: data.scoreboard,
   };
 
   //obetengo el usuario

@@ -117,26 +117,21 @@ export async function initResultPage(containerEl: Element) {
   }
   `;
   await state.setPlayerReadyStatus(false);
-  const data = await state.getState();
+  const data = state.getState();
 
   const resultContainer = document.createElement("div");
 
   if (data.gameState.owner === true) {
-    const result = state.whoWins(
-      data.gameState.play,
-      data.gameState.opponentPlay
-    );
-
-    const scoreboard = await state.getState();
+    const localState = JSON.parse(localStorage.getItem("localState"));
 
     resultContainer.innerHTML = `
-  <h1>${result.ownerResult}!</h1>
-  <div class="score-container">
-  <h3>Score</h3>
-  <h4>${data.gameState.name}   ${scoreboard.winner.owner}</h4>
-  <h4>${data.gameState.opponentName}   ${scoreboard.winner.guest}</h4>
-  </div>
-  `;
+      <h1>${localState.gameState.lastGameOwnerResult}!</h1>
+      <div class="score-container">
+      <h3>Score</h3>
+      <h4>${localState.gameState.name}   ${localState.scoreboard.owner}</h4>
+      <h4>${localState.gameState.opponentName}   ${localState.scoreboard.guest}</h4>
+      </div>
+      `;
     function showResult(result) {
       if (result == "ganaste")
         return resultContainer.setAttribute("class", "ganaste");
@@ -146,24 +141,18 @@ export async function initResultPage(containerEl: Element) {
         return resultContainer.setAttribute("class", "empate");
     }
 
-    showResult(result.ownerResult);
+    showResult(localState.gameState.lastGameOwnerResult);
   }
   if (data.gameState.owner === false) {
-    const result = state.whoWins(
-      data.gameState.opponentPlay,
-      data.gameState.play
-    );
-
-    const scoreboard = await state.getState();
-
+    const localState = JSON.parse(localStorage.getItem("localState"));
     resultContainer.innerHTML = `
-    <h1>${result.guestResult}</h1>!</h1>
-    <div class="score-container">
-    <h3>Score</h3>
-    <h4>${data.gameState.name}   ${scoreboard.winner.guest}</h4>
-    <h4>${data.gameState.opponentName}   ${scoreboard.winner.owner}</h4>
-    </div>
-    `;
+        <h1>${localState.gameState.lastGameGuestResult}!</h1>
+        <div class="score-container">
+        <h3>Score</h3>
+        <h4>${localState.gameState.name}   ${localState.scoreboard.guest}</h4>
+        <h4>${localState.gameState.opponentName}   ${localState.scoreboard.owner}</h4>
+        </div>
+        `;
     function showResult(result) {
       if (result == "ganaste")
         return resultContainer.setAttribute("class", "ganaste");
@@ -173,11 +162,22 @@ export async function initResultPage(containerEl: Element) {
         return resultContainer.setAttribute("class", "empate");
     }
 
-    showResult(result.guestResult);
+    showResult(localState.gameState.lastGameGuestResult);
   }
+  const contenedor = containerEl.querySelectorAll(".container");
+  const estilos = containerEl.querySelectorAll(".style");
+  window.addEventListener("load", () => {
+    if (contenedor.length > 0) {
+      contenedor[0].remove();
+      estilos[0].remove();
+    }
+  });
 
   const custombttn = document.createElement("custom-button");
+  custombttn.setAttribute("class", "result");
   resultContainer.appendChild(custombttn);
+
+  state.saveScoreboard();
 
   custombttn.addEventListener("click", async () => {
     await state.setPlayerReadyStatus(true);

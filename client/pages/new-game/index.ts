@@ -78,7 +78,7 @@ export function initNewGamePage(containerEl: Element) {
     <form class="form" for="formulario">
       <input type="text" class="input" id="formulario" placeholder="ingresa tu nombre">
       <button class="bttn">
-      <custom-button></custom-button>
+      <custom-button class="new-game"></custom-button>
       </button>
     </form>
   `;
@@ -100,7 +100,7 @@ export function initNewGamePage(containerEl: Element) {
     state.setName(data.value.toString());
     await state.signIn();
     await state.askNewRoom();
-    containerEl.removeChild(containerEl.querySelector("custom-button"));
+    containerEl.querySelector("custom-button").remove();
 
     goTo("/waiting-for-opponent");
   });

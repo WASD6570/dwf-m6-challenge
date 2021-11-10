@@ -2,10 +2,10 @@ import { API_BASE_URL, getDatabase, ref, onValue, app } from "./db";
 import { goTo } from "./router";
 
 type Play = "stone" | "papper" | "sissors" | string;
-
 const state = {
   data: {
     gameState: {
+      currentPage: null,
       name: "mock",
       play: null,
       usrId: "",
@@ -16,33 +16,38 @@ const state = {
       privateId: "",
       opponentName: "",
       opponentPlay: null,
+      lastGameOwnerResult: null,
+      lastGameGuestResult: null,
     },
     gameReady: false,
     playersReady: false,
-    winner: {
+    scoreboard: {
       owner: 0,
       guest: 0,
     },
   },
 
+  init() {
+    const localState = localStorage.getItem("localState");
+    if (localState != null) {
+      this.data = JSON.parse(localState);
+      goTo(this.data.gameState.currentPage);
+    } else if (localState == null) {
+      localStorage.setItem("localState", JSON.stringify(this.data));
+      goTo(this.data.gameState.currentPage);
+    }
+  },
+
   // inicializo el scoreboard y checkeo si ya hay data previa
-  async init() {
+  async saveScoreboard() {
     const data = await this.getState();
 
     const rawHistoryData = await fetch(
       `${API_BASE_URL}/history/${data.gameState.publicId}`
     );
-
-    const historyData = await rawHistoryData.json();
-
-    if (historyData.history == "createDashboard") {
-      data.winner = { owner: 0, guest: 0 };
-    } else {
-      data.winner = historyData.history;
-    }
   },
-  async getState() {
-    return await this.data;
+  getState() {
+    return this.data;
   },
 
   // da la señal de login cuando se conecta un usuario
@@ -319,47 +324,49 @@ const state = {
       guestResult = "empate";
     }
 
-    const datos = (resultOfOwner: string): string => {
-      if (resultOfOwner == "empate") return;
-      if (resultOfOwner == "ganaste") return resultOfOwner;
-      if (resultOfOwner == "perdiste") return resultOfOwner;
-    };
-    this.setWinner(datos(ownerResult));
-    return { ownerResult, guestResult };
+    this.setWinner(ownerResult, guestResult);
   },
 
   // setea en el state quien gano desde la perspectiva del OWNER
 
-  async setWinner(resultOfOwner: string) {
-    const data = await this.getState();
-    if (resultOfOwner == undefined) return;
+  setWinner(resultOfOwner: string, resultOfGuest: string): void {
+    const data = this.getState();
+    if (resultOfOwner == "empate") {
+      data.gameState.lastGameOwnerResult = resultOfOwner;
+      data.gameState.lastGameGuestResult = resultOfGuest;
+      return;
+    }
     if (resultOfOwner == "ganaste") {
-      data.winner.owner++;
+      data.scoreboard.owner++;
+      data.gameState.lastGameOwnerResult = resultOfOwner;
+      data.gameState.lastGameGuestResult = resultOfGuest;
 
-      return await this.saveHistory(data.winner);
+      return this.saveHistory(data.scoreboard);
     }
     if (resultOfOwner == "perdiste") {
-      data.winner.guest++;
+      data.scoreboard.guest++;
+      data.gameState.lastGameOwnerResult = resultOfOwner;
+      data.gameState.lastGameGuestResult = resultOfGuest;
 
-      return await this.saveHistory(data.winner);
+      return this.saveHistory(data.scoreboard);
     }
   },
 
   // setea los resultados en el state, localStorage y FireStore
 
-  async saveHistory(history) {
-    const data = await this.getState();
+  saveHistory(history) {
+    const data = this.getState();
 
-    data.winner = history;
+    data.scoreboard = history;
 
-    localStorage.setItem("history", JSON.stringify(data.winner));
+    localStorage.setItem("localState", JSON.stringify(data));
 
     fetch(`${API_BASE_URL}/history/save/${data.gameState.publicId}`, {
       method: "post",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(data.winner),
+      body: JSON.stringify(data.scoreboard),
     });
   },
 };

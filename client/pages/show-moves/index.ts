@@ -1,6 +1,6 @@
 import { goTo } from "../../router";
 import { state } from "../../state";
-export async function initShowMovesPage(containerEl: Element) {
+export function initShowMovesPage(containerEl: Element) {
   const div = document.createElement("div");
   div.setAttribute("class", "container");
   const style = document.createElement("style");
@@ -61,7 +61,7 @@ export async function initShowMovesPage(containerEl: Element) {
   const tijerasImg = require("url:../../img/tijerasr.png");
 
   //obtengo la jugada
-  const { gameState } = await state.getState();
+  const { gameState } = state.getState();
 
   //selecciono la jugada y la muestro
   const ownerImgSelector = (guestPlay: string) => {
@@ -76,6 +76,7 @@ export async function initShowMovesPage(containerEl: Element) {
   };
 
   if (gameState.owner == true) {
+    state.whoWins(gameState.play, gameState.opponentPlay);
     div.innerHTML = `
     <div class="machine-container">
     <img width="200px" height="250px" src=${guestImgSelector(
@@ -89,6 +90,7 @@ export async function initShowMovesPage(containerEl: Element) {
     `;
   }
   if (gameState.owner == false) {
+    state.whoWins(gameState.opponentPlay, gameState.play);
     div.innerHTML = `
     <div class="machine-container">
     <img width="200px" height="250px" src=${ownerImgSelector(

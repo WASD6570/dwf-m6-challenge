@@ -56,14 +56,12 @@ export function initInstructionsPage(containerEl: Element) {
       antes de que pasen los 3 segundos.
     </h1>
     <button class="bttn">
-      <custom-button></custom-button>
+      <custom-button class="instructions"></custom-button>
     </button>
     `;
 
   containerEl.appendChild(div);
   const bttn = document.querySelector(".bttn");
-
-  state.init();
 
   bttn.addEventListener("click", async () => {
     await state.setPlayerReadyStatus(true);
