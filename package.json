@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "ava",
-    "dev:back": "nodemon --watch './server/index.ts' --exec ts-node ./server/dev.ts",
+    "dev:back": "nodemon -r dotenv/config --legacy-watch ./server --exec ts-node ./dev.ts",
     "dev:front": "parcel serve ./client/index.html",
     "build:back": "tsc ./server/index.ts",
     "build:front": "parcel build ./client/index.html",
