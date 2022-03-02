@@ -1,6 +1,25 @@
-# dwf-m6-challenge
-# link de la app 👇
-https://piedra-papel-o-tijeras.herokuapp.com/
+# Desafio Modulo 6
 
-# API docs 👇
-https://documenter.getpostman.com/view/17908890/UVC3kTL8
+## Requisitos
+
+#### El backend, debe:
+* Comunicarse usando los principios restful.
+* Permitir crear gamerooms.
+* Permitir jugar (o sea, empezar y terminar partidas) y llevar el score del room para siempre.
+* Tener una API documentada con Postman y con el link a la documentación en el Readme.md.
+* Subí la app a Heroku y agregá el link al juego en el Readme.md.
+
+
+## Documentación
+ * Documentación del backend hecha en POSTMAN
+
+ * [Documentación](https://documenter.getpostman.com/view/17908890/UVC3kTL8)
+
+
+## Link a la app 👇
+ * [app](https://piedra-papel-o-tijeras.herokuapp.com/)
+## Tech Stack
+
+**Client:** TypeScript, Parcel, Custom Helements
+
+**Server:** Node, Express, Firebase, Heroku
